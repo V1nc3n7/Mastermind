@@ -20,13 +20,13 @@ let  occur liste couleur=
   in aux liste couleur 0;;
 
 (*
-let rec elag_utile liste=
+  let rec elag_utile liste=
   match liste with
-    [] -> false
+  [] -> false
   |h::t -> if occur liste h > 1 then true else elag_utile t;;
-	
-	let elagage liste =
-	  if elag_utile liste then (elaguerliste liste) else liste ;; *)
+  
+  let elagage liste =
+  if elag_utile liste then (elaguerliste liste) else liste ;; *)
 let elaguerliste l = 
   let rec aux l res =
     match l with 
