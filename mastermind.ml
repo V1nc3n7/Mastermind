@@ -1,7 +1,7 @@
 type couleur= Rouge | Bleu | Vert | Blanc | Jaune | Noir | Violet | Orange;;
-(**)
+(*# type couleur = Rouge | Bleu | Vert | Blanc | Jaune | Noir | Violet | Orange *)
 let taille=5;;
-(**)
+(*#  val taille : int = 5 *)
 let liste_couleurs =  [ "rouge";"vert";"blanc";"noir";"bleu";"jaune";"violet";"orange"] ;;
 
 
@@ -13,7 +13,7 @@ let rec  construire taille =
   in match taille with
   |1 ->[["rouge"];["vert"];["blanc"];["noir"];["bleu"];["jaune"];["violet"];["orange"]]
   |_->construire_aux (construire(taille-1));;
-(**)
+(*# val construire : int -> string list list = <fun> *)
 
 let  occur liste couleur=
   let rec aux liste couleur n =
@@ -21,14 +21,19 @@ let  occur liste couleur=
     |[] -> n
     |h::t -> if h=couleur then aux t couleur (n+1) else aux t couleur n 
   in aux liste couleur 0;;
-(**)
+(*# val occur : 'a list -> 'a -> int = <fun> *)
+
+
+let est_dans  couleur liste =
+  ((occur liste couleur) >0) ;;
+(*# val est_dans : 'a -> 'a list -> bool = <fun> *)
+
 
  let rec  suppr_utile l =
      match l with 
      |[] -> false
      |h::t -> if ( est_dans h t) then true else suppr_utile t ;;
-let est_dans  couleur liste =
-  ((occur liste couleur) >0) ;;
+(*# val suppr_utile : 'a list -> bool = <fun>*)
 (* tests *)
 let ltruc = [1;8;5;3;8;25;8;5;3;8;1;2;8];;
 let ltrucbis = [1;2;3;4;5;6;7;8;9];;
@@ -57,8 +62,7 @@ let elaguer_liste_comb liste_comb  =
     |[] -> res
     |h::t -> if (suppr_utile h)then elaguer_liste_comb_aux t res else elaguer_liste_comb_aux t res@h
   in elaguer_liste_comb_aux liste_comb [] ;;
-     
-
+     (*#  val elaguer_liste_comb : 'a list list -> 'a list = <fun>*)
 let jouer liste = 
   let rec aux liste =
     match liste with
