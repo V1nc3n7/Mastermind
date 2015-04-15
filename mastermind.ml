@@ -68,3 +68,48 @@ let elaguerliste l =
       []-> res 
     |h::t -> if (occur res h)> 1 then aux t res else aux res::h
   in aux l [];;
+  
+let game1 x =
+  let rec aux x=
+    match x with
+    |0->failwith "End Game"
+    |1->jouer(elaguerliste(construire 5))
+    |2->main()
+    |_->failwith "Erreur"
+  in aux x;;
+
+let game2 x =
+  let rec aux x=
+    match x with
+    |0->failwith "End Game"
+    |1->jouer(construire 5)
+    |2->main()
+    |_->failwith "Erreur"
+  in aux x;;
+
+let game3 x =
+  let rec aux x=
+    match x with
+    |0->failwith "End Game"
+    |1->jouer(construire 5)
+    |2->main()
+    |_->failwith "Erreur"
+  in aux x;;
+
+let partie x =   
+    match x with
+    |1->game1 x 
+    |2->game2 x
+    |3->game3 x
+    |_->failwith "Erreur";;
+
+let main()=print_string "Bienvenue dans le Mastermind \n";
+	   print_string "Quel mode de jeu voulez vous jouez?\n";
+	   print_string "1.Sans plusieurs occurence de couleurs\n";
+	   print_string "2.Avec plusieurs occurence de couleurs\n";
+	   print_string "3.Avec plusieurs occurence de couleur et limité à 20 essais\n";
+	   let s=read_line() in
+	   partie s;;
+
+main();;
+
