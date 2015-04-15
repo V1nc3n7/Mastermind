@@ -22,14 +22,7 @@ let  occur liste couleur=
     |h::t -> if h=couleur then aux t couleur (n+1) else aux t couleur n 
   in aux liste couleur 0;;
 (**)
-(*
-let elaguerliste l = 
-  let rec aux l res =
-    match l with 
-    |[]-> res 
-    |h::t -> if (occur res h)> 1 then aux t res else aux res::h
-  in aux l [];;
- *)
+
  let rec  suppr_utile l =
      match l with 
      |[] -> false
@@ -43,6 +36,21 @@ let test1=suppr_utile ltruc;;
 let test2=suppr_utile ltrucbis;;
 
 
+let string_liste liste=
+  let rec aux l couleur s=
+    match l  with
+    |[]->s;
+    |[h::t]->begin match h with
+		   |Rouge->s^"rouge;"
+		   |Vert->s^"vert;"
+		   |Bleu->s^"bleu;"
+		   |Noir->s^"noir;"
+		   |Violet->s^"violet;"
+		   |Jaune->s^"jaune;"
+		   |Orange->s^"orange;"
+		   |Blanc->s^"blanc;"
+  in aux liste (List.hd liste)"";;
+
 let elaguer_liste_comb liste_comb  = 
   let rec elaguer_liste_comb_aux liste_comb res =
     match liste_comb with
@@ -50,11 +58,23 @@ let elaguer_liste_comb liste_comb  =
     |h::t -> if (suppr_utile h)then elaguer_liste_comb_aux t res else elaguer_liste_comb_aux t res@h
   in elaguer_liste_comb_aux liste_comb [] ;;
      
+
+let jouer liste = 
+  let rec aux liste =
+    match liste with
+    |[]->print_string "Tricheur,vous avez menti!"
+    |[good_combi]->print_string "La bonne réponse est :\n";
+		   string_liste good_combi;
+    |h::t->proposer_combi h;
+	   print_string "\n";
+	   aux (delete_combi h)
+  in aux liste;;
+
      let game1 x =
        let rec aux x=
 	 match x with
 	 |0->failwith "End Game"
-	 |1->jouer(elaguerliste(construire 5))
+	 |1->jouer(elaguer_liste_comb (construire 5))
 	 |2->main()
 	 |_->failwith "Erreur"
        in aux x;;
