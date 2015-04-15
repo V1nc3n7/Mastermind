@@ -54,7 +54,7 @@ let elaguer_liste_comb liste_comb  =
        let rec aux x=
 	 match x with
 	 |0->failwith "End Game"
-	 |1->jouer(elaguerliste(construire 5))
+	 |1->jouer(elaguer_liste_comb (construire 5))
 	 |2->main()
 	 |_->failwith "Erreur"
        in aux x;;
@@ -88,7 +88,7 @@ let main()=print_string "Bienvenue dans le Mastermind \n";
 	   print_string "Quel mode de jeu voulez vous jouez?\n";
 	   print_string "1.Sans plusieurs occurence de couleurs\n";
 	   print_string "2.Avec plusieurs occurence de couleurs\n";
-	   print_string "3.Avec plusieurs occurence de couleur et limité à 20 essais\n";
+	   print_string "3.Avec plusieurs occurence de couleur et limitÃ© Ã  20 essais\n";
 	   let s=read_line() in
 	   partie s;;
 
