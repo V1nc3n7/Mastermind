@@ -1,5 +1,8 @@
 type couleur= Rouge | Bleu | Vert | Blanc | Jaune | Noir | Violet | Orange;;
 
+let liste_couleurs =  [ "rouge";"vert";"blanc";"noir";"bleu";"jaune";"violet";"orange"] ;;
+
+
 let rec  construire taille =
   let rec construire_aux liste =
     match liste with
@@ -17,6 +20,56 @@ let  occur liste couleur=
     |[] -> n
     |h::t -> if h=couleur then aux t couleur (n+1) else aux t couleur n 
   in aux liste couleur 0;;
+
+
+
+let est_dans  couleur liste =
+  ((occur liste couleur) >0) ;;
+
+
+ let rec  suppr_utile l =
+     match l with 
+     |[] -> false
+     |h::t -> if ( est_dans h t) then true else suppr_utile t ;;
+
+let ltruc = [1;8;5;3;8;25;8;5;3;8;1;2;8];;
+let ltrucbis = [1;2;3;4;5;6;7;8;9];;
+let test1=suppr_utile ltruc;;
+let test2=suppr_utile ltrucbis;;
+
+
+let string_liste liste=
+  let rec aux l couleur s=
+    match l  with
+    |[]->s;
+    |[h::t]->begin match h with
+		   |Rouge->s^"rouge;"
+		   |Vert->s^"vert;"
+		   |Bleu->s^"bleu;"
+		   |Noir->s^"noir;"
+		   |Violet->s^"violet;"
+		   |Jaune->s^"jaune;"
+		   |Orange->s^"orange;"
+		   |Blanc->s^"blanc;"
+  in aux liste (List.hd liste)"";;
+
+let elaguer_liste_comb liste_comb  = 
+  let rec elaguer_liste_comb_aux liste_comb res =
+    match liste_comb with
+    |[] -> res
+    |h::t -> if (suppr_utile h)then elaguer_liste_comb_aux t res else elaguer_liste_comb_aux t res@h
+  in elaguer_liste_comb_aux liste_comb [] ;;
+
+let jouer liste = 
+  let rec aux liste =
+    match liste with
+    |[]->print_string "Tricheur,vous avez menti!"
+    |[good_combi]->print_string "La bonne réponse est :\n";
+		   string_liste good_combi;
+    |h::t->proposer_combi h;
+	   print_string "\n";
+	   aux (delete_combi h)
+  in aux liste;;
 
 let elaguerliste l = 
   let rec aux l res =
@@ -105,3 +158,4 @@ let main()=print_string "Bienvenue dans le Mastermind \n";
 	   partie s;;
 
 main();;
+
