@@ -1,8 +1,7 @@
+(**Création du type couleur contenant toutes les couleurs possibles de notre Mastermind **)
 type couleur= Rouge | Bleu | Vert | Blanc | Jaune | Noir | Violet | Orange;;
 
-let liste_couleurs =  [ "rouge";"vert";"blanc";"noir";"bleu";"jaune";"violet";"orange"] ;;
-
-
+(**Fonction qui permet la création de la liste de toutes les combinaisons possibles **)
 let rec  construire taille =
   let rec construire_aux liste =
     match liste with
@@ -14,6 +13,7 @@ let rec  construire taille =
 
 construire 5;;
 
+(**Fonction qui compte le nombre d'occurence d'une couleur dans la combinaison **)
 let  occur liste couleur=
   let rec aux liste couleur n =
     match liste with 
@@ -21,97 +21,69 @@ let  occur liste couleur=
     |h::t -> if h=couleur then aux t couleur (n+1) else aux t couleur n 
   in aux liste couleur 0;;
 
-
-
-let est_dans  couleur liste =
-  ((occur liste couleur) >0) ;;
-
-
- let rec  suppr_utile l =
-     match l with 
-     |[] -> false
-     |h::t -> if ( est_dans h t) then true else suppr_utile t ;;
-
-let ltruc = [1;8;5;3;8;25;8;5;3;8;1;2;8];;
-let ltrucbis = [1;2;3;4;5;6;7;8;9];;
-let test1=suppr_utile ltruc;;
-let test2=suppr_utile ltrucbis;;
-
-
-let string_liste liste=
-  let rec aux l couleur s=
-    match l  with
-    |[]->s;
-    |[h::t]->begin match h with
-		   |Rouge->s^"rouge;"
-		   |Vert->s^"vert;"
-		   |Bleu->s^"bleu;"
-		   |Noir->s^"noir;"
-		   |Violet->s^"violet;"
-		   |Jaune->s^"jaune;"
-		   |Orange->s^"orange;"
-		   |Blanc->s^"blanc;"
-  in aux liste (List.hd liste)"";;
-
-let elaguer_liste_comb liste_comb  = 
-  let rec elaguer_liste_comb_aux liste_comb res =
-    match liste_comb with
-    |[] -> res
-    |h::t -> if (suppr_utile h)then elaguer_liste_comb_aux t res else elaguer_liste_comb_aux t res@h
-  in elaguer_liste_comb_aux liste_comb [] ;;
-
-let jouer liste = 
-  let rec aux liste =
-    match liste with
-    |[]->print_string "Tricheur,vous avez menti!"
-    |[good_combi]->print_string "La bonne réponse est :\n";
-		   string_liste good_combi;
-    |h::t->proposer_combi h;
-	   print_string "\n";
-	   aux (delete_combi h)
-  in aux liste;;
-
 let elaguerliste l = 
   let rec aux l res =
     match l with 
       []-> res 
     |h::t -> if (occur res h)> 1 then aux t res else aux res::h
   in aux l [];;
+
+elaguerliste [[Rouge;Bleu;Rouge];[Bleu;Rouge;Vert]];;
+
 let couleur_to_string c = 
   match c with 
-  |Bleu -> "Bleu"
-  |Blanc -> "Blanc"
-  |Rouge ->"Rouge"
-  |Vert->"Vert"
-  |Noir->"Noir"
-  |Violet->"Violet"
-  |Jaune->"Jaune"
-  |Orange->"Orange" ;;
+  |Bleu -> "Bleu;"
+  |Blanc -> "Blanc;"
+  |Rouge ->"Rouge;"
+  |Vert->"Vert "
+  |Noir->"Noir;"
+  |Violet->"Violet;"
+  |Jaune->"Jaune;"
+  |Orange->"Orange;";;
   
 let liste_couleur_to_string liste_couleur =
-  let rec liste_couleur_to_string_aux liste_couleur string =
+  let rec liste_couleur_to_string_aux liste_couleur s=
     match liste_couleur with
     |[] -> "" 
-    |h::t -> (couleur_to_string h)^(liste_couleur_to_string_aux t)
+    |h::t -> (couleur_to_string h)^(liste_couleur_to_string_aux t s)
   in liste_couleur_to_string_aux liste_couleur "";;
-  
-let string_liste liste=
-  let rec aux l couleur s=
-    match l  with
-    |[]->s
-    |[h::t]->
 
-string_liste [Rouge;Vert;Bleu];;
+liste_couleur_to_string [Rouge;Bleu;Noir];;
+
+let compare couple_liste bp =
+  let rec aux couple_liste bp =
+    match couple_liste  with
+    |([],[])->false
+    |(h1::t1,h2::t2)->if h1=h2 then 
+			if bp=0 then true 
+			else aux t1 t2 (bp-1)
+		      else aux t1 t2 bp
+  in aux combi_propose combi_possible bp;;
+
+let delete_combi liste_possible combi_propose bp =
+  let rec aux liste_possible =
+    match liste_possible with
+    |[]->[]
+    |h::t->if (compare (combi_propose,h) bp)= true then
+	     h::(aux t)
+	   else aux t
+  in aux liste_possible;;
+  
+
+let proposer_combi proposition liste_possible =
+  print_string "Est ce la bonne combinaison?Indiquez le nombre de couleurs bien placées\n";
+  print_string(liste_couleur_to_string proposition)^"\n";
+
+  delete_combi liste_possible proposition
+  
 
 let jouer liste = 
   let rec aux liste =
     match liste with
     |[]->print_string "Tricheur,vous avez menti!"
     |[good_combi]->print_string "La bonne réponse est :\n";
-		   string_liste good_combi;
-    |h::t->proposer_combi h;
-	   print_string "\n";
-	   aux (delete_combi h)
+		   print_string(liste_couleur_to_string good_combi);
+    |h::t->aux (proposer_combi h t)
   in aux liste;;
 
   
@@ -158,4 +130,3 @@ let main()=print_string "Bienvenue dans le Mastermind \n";
 	   partie s;;
 
 main();;
-
