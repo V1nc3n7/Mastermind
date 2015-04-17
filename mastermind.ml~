@@ -21,11 +21,14 @@ let  occur liste couleur=
     |h::t -> if h=couleur then aux t couleur (n+1) else aux t couleur n 
   in aux liste couleur 0;;
 
+let est_dedans liste couleur =
+(occur liste couleur)<>0;;
+
 let elaguerliste l = 
   let rec aux l res =
     match l with 
       []-> res 
-    |h::t -> if (occur res h)> 1 then aux t res else aux res::h
+    |h::t -> if (est_dedans res h) then aux t res else aux t  res@[h]
   in aux l [];;
 
 elaguerliste [[Rouge;Bleu;Rouge];[Bleu;Rouge;Vert]];;
@@ -51,23 +54,23 @@ let liste_couleur_to_string liste_couleur =
 liste_couleur_to_string [Rouge;Bleu;Noir];;
 
 let compare couple_liste bp =
-  let rec aux couple_liste bp =
+  let rec compare_aux couple_liste bp =
     match couple_liste  with
     |([],[])->false
     |(h1::t1,h2::t2)->if h1=h2 then 
 			if bp=0 then true 
-			else aux t1 t2 (bp-1)
-		      else aux t1 t2 bp
-  in aux combi_propose combi_possible bp;;
+			else compare_aux t1 t2 (bp-1)
+		      else compare_aux t1 t2 bp
+  in compare_aux combi_propose combi_possible bp;;
 
 let delete_combi liste_possible combi_propose bp =
-  let rec aux liste_possible =
+  let rec delete_combi_aux liste_possible =
     match liste_possible with
     |[]->[]
-    |h::t->if (compare (combi_propose,h) bp)= true then
-	     h::(aux t)
-	   else aux t
-  in aux liste_possible;;
+    |h::t->if (compare (combi_propose,h) bp) then
+	     h::(delete_combi_aux t)
+	   else delete_combi_aux t
+  in delete_combi_aux liste_possible;;
   
 
 let proposer_combi proposition liste_possible =
